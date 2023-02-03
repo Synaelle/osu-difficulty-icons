@@ -13,3 +13,9 @@ Change:
 ```
 https://raw.githubusercontent.com/Foreheadchann/osu-difficulty-icons/main/rendered/[gamemode]/stars_[sr].png
 ```
+
+Alternatively for 2x size (32x32)
+
+```
+https://raw.githubusercontent.com/Foreheadchann/osu-difficulty-icons/main/rendered/[gamemode]/stars_[sr]@2x.png
+```
