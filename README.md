@@ -2,7 +2,7 @@
 osu! difficulty icons rendered using the difficulty color gradient
 
 # Usage
-To use this, follow use the link below and the slight instructions
+To use this, use the link below and edit it using the instructions
 
 Change:
 
