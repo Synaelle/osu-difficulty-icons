@@ -11,11 +11,6 @@ def load_colors(image: Image, gradient):
         sr += 0.1
         sr = round(sr, 1)
 
-'''
-for y in range(image.height):
-        for x in range(image.width):
-'''
-
 def render_colors(image: Image, mode: int = 0):
     match mode:
         case 0:
