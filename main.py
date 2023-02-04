@@ -41,13 +41,11 @@ def render_colors(image: Image, mode: int = 0):
         
         new_im = Image.new(image.mode, image.size)
         new_im.putdata(new_data)
-        
                 
-        new_im = new_im.resize((32, 32), Image.BICUBIC)
-        new_im.save(f'rendered/{mode}/stars_{file_end}@2x.png')
-        new_im = new_im.resize((16, 16), Image.BICUBIC)
-        new_im.save(f'rendered/{mode}/stars_{file_end}.png')    
-                    
+        out2x = new_im.resize((32, 32), Image.BICUBIC)
+        out2x.save(f'rendered/{mode}/stars_{file_end}@2x.png')
+        out = new_im.resize((16, 16), Image.BICUBIC)
+        out.save(f'rendered/{mode}/stars_{file_end}.png')                      
  
 im = Image.open('difficulty_gradient.png')
 gradient = im.load()
