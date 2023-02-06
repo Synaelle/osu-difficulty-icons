@@ -51,3 +51,7 @@ render_colors(Image.open('../base_std.png'), 0)
 render_colors(Image.open('../base_taiko.png'), 1)
 render_colors(Image.open('../base_ctb.png'), 2)
 render_colors(Image.open('../base_mania.png'), 3)
+
+with open('../rendered/color_data.txt', 'w') as cdf:
+    cdf.write(str(colors))
+    cdf.close()

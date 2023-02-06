@@ -91,8 +91,10 @@ request_headers = {
 beatmapset = request_user_beatmapset(config)
 beatmapset_request = requests.request('GET', f'{base_url}/beatmapsets/{beatmapset}', headers=request_headers)
 
-
 difficulties = beatmapset_request.json()['beatmaps']
+
+for diff in difficulties:
+    print(diff['user_id'])
 
 title_color = config['Colors']['TitleColor']
 
