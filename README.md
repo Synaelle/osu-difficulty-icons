@@ -33,10 +33,13 @@ After that, change the values under [API] category inside bbconfig.ini
 
 ```ini
 # Copy Client ID (Always Visible)
-ClientID = client_id_here
+ClientID = none
 
 # Show Client Secret -> Copy Revealed Client Secret
-ClientSecret = client_secret_here
+ClientSecret = none
+
+# Your User ID (Used for Formatting)
+UserID = -1
 ```
 
 You can tweak the other available values inside the configuration file during this time
