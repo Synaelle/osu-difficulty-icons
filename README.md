@@ -45,3 +45,9 @@ UserID = -1
 You can tweak the other available values inside the configuration file during this time
 
 Now should be able to use the BBCode generator
+
+# Outputs
+An Example of what this can output
+
+![img](https://i.imgur.com/VwKpRzw.png)
+
