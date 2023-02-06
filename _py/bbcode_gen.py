@@ -81,12 +81,19 @@ def fancy_color_sr(sr, round_sr) -> str:
     g = min(color[1] + 25, 255)
     b = min(color[2] + 25, 255)
     
-    return ' - [color=#{}]{}[/color][color=#FCFF5A]*[/color]'.format(rgb_to_hex((r, g, b, 255)) if get_allow(config['Colors'], 'FancySRColoring') else 'FFFFFF', sr) if get_allow(config['Formatting'], 'AddSRToDifficulties') else ''
+    return ' - [color=#{}]{}[/color][color=#FCFF5A]*[/color]'.format(rgb_to_hex((r, g, b, 255)) 
+                                                                     if get_allow(config['Colors'], 'FancySRColoring') 
+                                                                     else 'FFFFFF', 
+                                                                     sr) if get_allow(config['Formatting'], 'AddSRToDifficulties') else ''
 
 def user_link(config: ConfigParser, uid, name):
     if get_allow(config['Formatting'], 'IgnoreSelf') and int(config['UserID']) == int(uid):
         return ''
-    return ' by [b]{}[/b]'.format('[color=#CFCFCF]Me[/color]' if name == '' else '[url=https://osu.ppy.sh/users/{}]{}[/url]'.format(uid, name) if get_allow(config['Formatting'], 'LinkMappers') else name) if get_allow(config['Formatting'], 'DisplayMappers') else ''
+    return ' by [b]{}[/b]'.format('[color=#CFCFCF]Me[/color]' 
+                                  if name == '' else 
+                                  '[url=https://osu.ppy.sh/users/{}]{}[/url]'.format(uid, name) 
+                                  if get_allow(config['Formatting'], 'LinkMappers') else 
+                                  name) if get_allow(config['Formatting'], 'DisplayMappers') else ''
     
 
 config = ConfigParser()
@@ -133,15 +140,25 @@ bbcode_storage = {
 for difficulty in difficulties:
     mode = int(difficulty['mode_int'])
     unrounded_sr = float(difficulty['difficulty_rating'])
-    sr = round(float(difficulty['difficulty_rating']), 1)
+    sr = round(unrounded_sr, 1)
     self_id = config['API']['UserID']
     
     if int(self_id) != int(difficulty['user_id']):
         target_id = difficulty['user_id']
         request_user = requests.request('GET', f'{base_url}/users/{target_id}', headers=request_headers)
-        bbcode_storage[mode].append([construct_image_bbcode(mode, sr), difficulty['version'], sr, unrounded_sr, difficulty['user_id'], request_user.json()['username']])
+        bbcode_storage[mode].append([construct_image_bbcode(mode, sr), 
+                                     difficulty['version'], 
+                                     sr, 
+                                     unrounded_sr, 
+                                     difficulty['user_id'], 
+                                     request_user.json()['username']])
     else:
-        bbcode_storage[mode].append([construct_image_bbcode(mode, sr), difficulty['version'], sr, unrounded_sr, difficulty['user_id'], ''])
+        bbcode_storage[mode].append([construct_image_bbcode(mode, sr), 
+                                     difficulty['version'], 
+                                     sr, 
+                                     unrounded_sr, 
+                                     difficulty['user_id'], 
+                                     ''])
 
 for mode in bbcode_storage:
     match mode:
