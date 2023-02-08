@@ -97,7 +97,7 @@ def user_link(config: ConfigParser, uid, name):
     
 
 config = ConfigParser()
-config.read('bbconfig.ini')
+config.read('./bbconfig.ini')
 
 if int(config['API']['UserID']) <= 0:
     input('Please Configure UserID in bbconfig.ini before use ... ')
@@ -182,3 +182,5 @@ for mode in bbcode_storage:
         
         print('{}{}'.format(get_tag('centre', 'Formatting', 'CentreContent', True), 
                             get_tag('notice', 'Formatting', 'SurroundWithBox', True)))
+
+input()
