@@ -85,15 +85,28 @@ def fancy_color_sr(sr, round_sr: float) -> str:
     g = min(color[1] + 25, 255)
     b = min(color[2] + 25, 255)
     
-    return ' - [color=#{}]{}[/color][color=#FCFF5A]*[/color]'.format(rgb_to_hex((r, g, b, 255)) 
+    fancy_color = rgb_to_hex((r, g, b, 255))
+    
+    if r <= 40 and g <= 40 and b <= 40: 
+        fancy_color = rgb_to_hex((255 - r, 255 - g, 255 - b, 255))
+    
+    return ' - [color=#{}]{}[/color][color=#FCFF5A]*[/color]'.format(fancy_color 
                                                                      if get_allow(config['Colors'], 'FancySRColoring') 
                                                                      else 'FFFFFF', 
                                                                      sr) if get_allow(config['Formatting'], 'AddSRToDifficulties') else ''
 
-def user_link(config: ConfigParser, uid, name):
-    if get_allow(config['Formatting'], 'IgnoreSelf') and int(config['UserID']) == int(uid):
+def user_link(config: ConfigParser, uid, difficulty, name):
+    self_color = '[color=#CFCFCF]Me[/color]' 
+    
+    if get_allow(config['Formatting'], 'IgnoreSelf') and int(config['API']['UserID']) == int(uid):
         return ''
-    return ' by [b]{}[/b]'.format('[color=#CFCFCF]Me[/color]' 
+    
+    if not get_allow(config['Formatting'], 'IgnoreSelf') and int(config['API']['UserID']) == int(uid):
+        if 's\'' in difficulty or '\'s' in difficulty:
+            auto_detect_name = difficulty.split('\'')[0]
+            self_color = f'[color=#AA7070]{auto_detect_name}[/color]' 
+            
+    return ' by [b]{}[/b]'.format(self_color 
                                   if name == '' else 
                                   '[url=https://osu.ppy.sh/users/{}]{}[/url]'.format(uid, name) 
                                   if get_allow(config['Formatting'], 'LinkMappers') else 
@@ -182,7 +195,7 @@ for mode in bbcode_storage:
                                  bbcode[1],
                                  get_tag('color', 'Colors', 'MatchIconColorToDifficulty', True), 
                                  fancy_color_sr(bbcode[3], bbcode[2]),
-                                 user_link(config, bbcode[4], bbcode[5])))
+                                 user_link(config, bbcode[4], bbcode[1], bbcode[5])))
         
         print('{}{}'.format(get_tag('centre', 'Formatting', 'CentreContent', True), 
                             get_tag('notice', 'Formatting', 'SurroundWithBox', True)))
