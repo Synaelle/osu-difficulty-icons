@@ -59,7 +59,12 @@ def construct_image_bbcode(mode: str, sr: float) -> str:
         case 3: mode = 'mania'
         case _: mode = 'unknown'
         
-    return f'[img]https://raw.githubusercontent.com/hiderikzki/osu-difficulty-icons/main/rendered/{mode}/stars_{min(sr, 9)}.png[/img]';
+    sr2 = round(min(sr, 9), 1)
+    
+    if sr2 >= 9:
+        sr2 = "9.0" # very bad fix, but what ever this is bad code anyways lol
+        
+    return f'[img]https://raw.githubusercontent.com/hiderikzki/osu-difficulty-icons/main/rendered/{mode}/stars_{sr2}.png[/img]';
 
 def get_tag(tag: str, category: str, field: str, close: bool) -> str:
     return '[{}{}]'.format('/' if close else '', tag) if get_allow(config[category], field) else ''
@@ -73,8 +78,8 @@ colors = request_saved_color_data()
 get_allow = lambda selection, field : True if int(selection[field]) == 1 else False
 rgb_to_hex = lambda rgb : '%02x%02x%02x' % rgb[0:3]
 
-def fancy_color_sr(sr, round_sr) -> str:
-    color = colors[float(round_sr)]
+def fancy_color_sr(sr, round_sr: float) -> str:
+    color = colors[round(min(round_sr, 9), 1)]
     
     r = min(color[0] + 25, 255)
     g = min(color[1] + 25, 255)
@@ -98,10 +103,6 @@ def user_link(config: ConfigParser, uid, name):
 config = ConfigParser()
 config.read('./bbconfig.ini')
 
-if int(config['API']['UserID']) <= 0:
-    input('Please Configure UserID in bbconfig.ini before use ... ')
-    exit()
-
 if not api_usable(config):
     input('Please Configure ClientID & ClientSecret in bbconfig.ini before use ... ')
     exit()
@@ -115,6 +116,10 @@ if not connection:
     exit()
     
 print('Ok.\n')
+
+if int(config['API']['UserID']) <= 0:
+    input('Please Configure UserID in bbconfig.ini before use ... ')
+    exit()
 
 token = connection['access_token']
 
@@ -173,7 +178,7 @@ for mode in bbcode_storage:
         
         for bbcode in sorted(bbcode_storage[mode], key = lambda item : item[2]):
             print('{} {}{}{}{}{}'.format(bbcode[0], 
-                                 get_tag('color', 'Colors', 'MatchIconColorToDifficulty', False).replace('[color]', '[color=#{}]'.format(rgb_to_hex(colors[bbcode[2]]))),
+                                 get_tag('color', 'Colors', 'MatchIconColorToDifficulty', False).replace('[color]', '[color=#{}]'.format(rgb_to_hex(colors[round(min(bbcode[2], 9), 1)]))),
                                  bbcode[1],
                                  get_tag('color', 'Colors', 'MatchIconColorToDifficulty', True), 
                                  fancy_color_sr(bbcode[3], bbcode[2]),
@@ -182,4 +187,4 @@ for mode in bbcode_storage:
         print('{}{}'.format(get_tag('centre', 'Formatting', 'CentreContent', True), 
                             get_tag('notice', 'Formatting', 'SurroundWithBox', True)))
 
-input()
+input() # funny anti-terminate line to copy stuffs
