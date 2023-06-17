@@ -1,6 +1,5 @@
 from configparser import ConfigParser
 import requests
-import json
 import ast
 
 base_url = 'https://osu.ppy.sh/api/v2'
@@ -23,7 +22,7 @@ def api_test_connect(config: ConfigParser) -> dict | bool:
         'scope': 'public'
     })
     
-    if response.status_code >= 200 and response.status_code <= 203:
+    if response.status_code >= 200 and response.status_code <= 204:
         return response.json()
     else:
         return False
@@ -60,7 +59,7 @@ def construct_image_bbcode(mode: str, sr: float) -> str:
         case 3: mode = 'mania'
         case _: mode = 'unknown'
         
-    return f'[img]https://raw.githubusercontent.com/hiderikzki/osu-difficulty-icons/main/rendered/{mode}/stars_{sr}.png[/img]';
+    return f'[img]https://raw.githubusercontent.com/hiderikzki/osu-difficulty-icons/main/rendered/{mode}/stars_{min(sr, 9)}.png[/img]';
 
 def get_tag(tag: str, category: str, field: str, close: bool) -> str:
     return '[{}{}]'.format('/' if close else '', tag) if get_allow(config[category], field) else ''
